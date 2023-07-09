@@ -2,14 +2,31 @@
 <html>
     <head>
         <title>Create your own shop</title>
-        <link rel="stylesheet" type="application/css" href="main.css">
+        <link rel="stylesheet" type="text/css" href="main.css">
+        <script>
+            function f() {
+                const xhr = new XMLHttpRequest();
+
+                const body = '{"name": "12", "count": 12}';
+                xhr.open('post', 'http://192.168.88.253:4000/product/add', true);
+                xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        console.log(xhr.response)
+                    }
+                }
+
+                xhr.send(body);
+            }
+        </script>
     </head>
     <body>
     <header>
         <img src="icon.png" width="100" height="100">
         <div id="links">
             <a href="#create_shop">Create shop</a>
-            <a href="#my_shops">My shops</a>
+            <a href="#all_shops">All shops</a>
             <a href="#delete_shop">Delete shop</a>
         </div>
     </header>
@@ -36,12 +53,35 @@
             <h3>Sales can be simpler</h3>
             <img src="site.jpg">
         </section>
-        <section>
-            <div id="shops">
-                <a id="my_shops"></a>
+        <section id="shops">
+            <div id="shops_div">
+                <a id="all_shops"></a>
                 <h2>Already created shops</h2>
-                <p>There're no shops yet.</p>
-                <script type="module" src="main.js"></script>
+                <table>
+                    <thead>
+                        <th>id</th>
+                        <th>name</th>
+                        <th>public</th>
+                    </thead>
+                    <tbody id="response">
+                    </tbody>
+                </table>
+                <script type="text/javascript">
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            let shops = JSON.parse(xhr.response);
+                            for (let i = 0; i < shops.length; i++) {
+                                document.getElementById("response").innerHTML +=
+                                    `<tr><td>${shops[i].id}</td>
+                                    <td>${shops[i].name}</td>
+                                    <td>${shops[i].count}</td></tr>`;
+                            }
+                        }
+                    }
+                    xhr.open('get', 'http://192.168.88.253:4000/product/all', true);
+                    xhr.send();
+                </script>
             </div>
         </section>
         <section class="error">
@@ -51,13 +91,13 @@
                 <li>Name's length should be more than 7 symbols</li>
             </ul>
         </section>
-        <form id="create">
+        <form id="create" onsubmit="f()">
             <a id="create_shop"></a>
             <div class="form">
                 <h2>Create a shop</h2>
                 <label>Name</label>
                 <br>
-                <input type="text" placeholder="Enter any name">
+                <input id="name" type="text" placeholder="Enter any name">
                 <br>
                 <button type="submit">Create shop</button>
                 <div>

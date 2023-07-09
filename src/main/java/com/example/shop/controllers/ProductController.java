@@ -9,7 +9,6 @@ import org.hibernate.cfg.Configuration;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +37,6 @@ public class ProductController {
             props.setProperty("hibernate.connection.autocommit", "true");
 
             final Configuration config = new Configuration()
-                    //.addResource("cfg.xml")
                     .addAnnotatedClass(com.example.shop.models.ProductPojo.class)
                     .addProperties(props);
             SessionFactory factory = config.buildSessionFactory();
@@ -51,7 +49,7 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public String createProduct(@RequestBody ProductDto dto) {
+    public ResponseEntity<String> createProduct(@RequestBody ProductDto dto) {
         JSONObject object = new JSONObject(dto);
         Transaction transaction = session.beginTransaction();
         final ProductPojo pojo = new ProductPojo();
@@ -61,21 +59,31 @@ public class ProductController {
         session.persist(pojo);
         transaction.commit();
 
-        return "200";
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+
+
+//        responseHeaders.set("Access-Control-Allow-Headers", "*");
+//        responseHeaders.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
+//        responseHeaders.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body("Product is created");
     };
 
     @GetMapping("/all")
-    public ResponseEntity.BodyBuilder getProduct() {
+    public ResponseEntity<List<ProductPojo>> getProduct() {
         Transaction transaction = session.beginTransaction();
 
         var res = session.createNativeQuery("select * from product", ProductPojo.class).list();
         transaction.commit();
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Access-Control-Allow-Origin",
-                "*");
-        return ResponseEntity
-                .ok()
-                .headers(responseHeaders);
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body(res);
     };
 }
