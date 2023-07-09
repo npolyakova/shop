@@ -1,8 +1,9 @@
 package com.example.shop.controllers;
 
+import com.example.shop.models.ProductDto;
+import com.example.shop.models.ProductPojo;
 import com.example.shop.models.ShopDto;
 import com.example.shop.models.ShopPojo;
-import jakarta.persistence.Entity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -18,12 +19,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Properties;
 
+import static java.lang.Boolean.valueOf;
 
 @RestController
-@Entity
 @RequestMapping(path = "/shop")
 public class ShopController {
 
@@ -43,7 +43,7 @@ public class ShopController {
 
             final Configuration config = new Configuration()
                     //.addResource("cfg.xml")
-                    .addAnnotatedClass(com.example.shop.models.ShopPojo.class)
+                    .addAnnotatedClass(com.example.shop.models.ShopDto.class)
                     .addProperties(props);
             SessionFactory factory = config.buildSessionFactory();
 
@@ -59,8 +59,8 @@ public class ShopController {
         JSONObject object = new JSONObject(dto);
         Transaction transaction = session.beginTransaction();
         final ShopPojo pojo = new ShopPojo();
-        pojo.setShopName(object.get("shopName").toString());
-        pojo.setShopPublic(Boolean.parseBoolean(object.get("shopPublic").toString()));
+        pojo.setShopName(object.get("shop_name").toString());
+        pojo.setShopType(valueOf(object.get("shop_type").toString()));
 
         session.persist(pojo);
         transaction.commit();
@@ -68,43 +68,49 @@ public class ShopController {
         return "200";
     }
 
-    @GetMapping("/{shopId}")
-    public ShopPojo getShop(@PathVariable long shopId) {
+    @GetMapping("/{shop_id}")
+    public ResponseEntity.BodyBuilder getShop(@PathVariable long shopId) {
         Transaction transaction = session.beginTransaction();
 
-        var res = session.createNativeQuery("select * from shops where shop_id = " + shopId,
-                ShopPojo.class).uniqueResult();
+        var res = session.createNativeQuery("select * from shops where id = '" +
+                shopId + "'", ShopDto.class).list();
         transaction.commit();
 
-        return res;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin",
+                "*");
+        return ResponseEntity
+                .ok()
+                .headers(responseHeaders);
     }
-
 
     @GetMapping("/all")
-    public List<ShopPojo> getAllShops() {
+    public ResponseEntity.BodyBuilder getAllShops() {
         Transaction transaction = session.beginTransaction();
 
-        var res = session.createNativeQuery("select * from shops", ShopPojo.class).list();
+        var res = session.createNativeQuery("select * from shops", ShopDto.class).list();
         transaction.commit();
 
-        return res;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin",
+                "*");
+        return ResponseEntity
+                .ok()
+                .headers(responseHeaders);
     }
 
-    @DeleteMapping("/delete/{shopId}")
+    @DeleteMapping("/delete/{shop_id}")
     public String deleteProduct(@PathVariable long shopId) {
-        ShopPojo p = new ShopPojo();
-        p.setShopId(shopId);
-
-
 
         Transaction transaction = session.beginTransaction();
 
-//        session.remove(p);//.createNativeQuery("delete from shops where shop_id = " + shopId, ShopPojo.class);
-//        transaction.commit();
-        session.createNativeQuery("delete from shops where shop_id = :id")
-                .setParameter("id", p.getShopId())
-                .executeUpdate();
+        var res = session.createNativeQuery("delete * from shops where id = '" +
+                shopId + "'", ShopDto.class).list();
         transaction.commit();
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin",
+                "*");
 
         return "204";
     }
