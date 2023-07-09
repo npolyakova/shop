@@ -2,39 +2,39 @@ package com.example.shop.models;
 
 public class ShopDto {
 
-    private Long shop_id;
+    private Long shopId;
 
-    private String shop_name;
+    private String shopName;
 
-    private boolean shop_type;
+    private boolean shopPublic;
 
-    public void setShop_id(Long shop_id) {
-        this.shop_id = shop_id;
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
     }
 
-    public Long getShop_id() {
-        return shop_id;
+    public Long getShopId() {
+        return shopId;
     }
 
-    public void setShop_name(String shop_name) {
-        this.shop_name = shop_name;
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 
-    public String getShop_name() {
-        return shop_name;
+    public String getShopName() {
+        return shopName;
     }
 
-    public void setShop_type(boolean shop_type) {
-        this.shop_type = shop_type;
+    public void setShopPublic(boolean shopPublic) {
+        this.shopPublic = shopPublic;
     }
 
-    public boolean isShop_type() {
-        return shop_type;
+    public boolean isShopPublic() {
+        return shopPublic;
     }
 
-    public ShopDto(Long shop_id, String shop_name, boolean shop_type) {
-        this.shop_id = shop_id;
-        this.shop_name = shop_name;
-        this.shop_type = shop_type;
+    public ShopDto(Long shopId, String shopName, boolean shopPublic) {
+        this.shopId = shopId;
+        this.shopName = shopName;
+        this.shopPublic = shopPublic;
     }
 }
