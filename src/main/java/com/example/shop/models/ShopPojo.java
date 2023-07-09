@@ -16,7 +16,7 @@ public class ShopPojo {
 
     private String shopName;
 
-    private boolean shopType;
+    private boolean shopPublic;
 
     public void setShopId(Long id) {
         this.shopId = id;
@@ -34,16 +34,16 @@ public class ShopPojo {
     }
 
     @Column(name = "shop_name", length = 256, nullable = false)
-    public String getName() {
+    public String getShopName() {
         return shopName;
     }
 
-    public void setShopType(boolean shopType) {
-        this.shopType = shopType;
+    public void setShopPublic(boolean shopPublic) {
+        this.shopPublic = shopPublic;
     }
 
-    @Column(name = "shop_type",  nullable = false)
-    public boolean getSHopType() {
-        return shopType;
+    @Column(name = "shop_public",  nullable = false)
+    public boolean getShopPublic() {
+        return shopPublic;
     }
 }
