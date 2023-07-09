@@ -65,17 +65,12 @@ public class ProductController {
     };
 
     @GetMapping("/all")
-    public ResponseEntity.BodyBuilder getProduct() {
+    public List<ProductPojo> getProduct() {
         Transaction transaction = session.beginTransaction();
 
         var res = session.createNativeQuery("select * from product", ProductPojo.class).list();
         transaction.commit();
 
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Access-Control-Allow-Origin",
-                "*");
-        return ResponseEntity
-                .ok()
-                .headers(responseHeaders);
+        return res;
     };
 }
