@@ -31,7 +31,7 @@ h3 {
     color: white;
 }
 
-section.error{
+.error{
     width: 400px;
     border-radius: 4px;
     background-color: #DE649B;
@@ -39,8 +39,6 @@ section.error{
 }
 
 section {
-    flex: content;
-    align-items: flex-end;
     background-color: #44317C;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -63,22 +61,33 @@ img {
 
 .form {
     background-color: #52ABDF;
-    text-align: center;
-    width: 400px;
+    width: 600px;
     border-radius: 4px;
-    /*выровнять друг за другом*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .form label {
-    font-size: 20px;
+    font-size: 15px;
+    margin-bottom: 10px;
     /*padding-top: 10px;*/
     /*margin-bottom: 20px;*/
+}
+
+[type="checkbox"] {
+    width: 50px;
 }
 
 .form input {
     padding-bottom: 10px;
     margin-bottom: 10px;
     border-radius: 4px;
+    border-color: white;
+}
+
+#name {
+    width: 220px;
 }
 
 .form button {
@@ -88,6 +97,7 @@ img {
     width: 100px;
     border-radius: 4px;
     font-size: 15px;
+    margin-bottom: 20px;
 }
 
 footer {
@@ -105,6 +115,7 @@ a {
     padding-top: 10px;
     margin-left: 10px;
     border-radius: 4px;
+    margin-bottom: 5px;
 }
 
 table th {
