@@ -9,6 +9,7 @@ import org.hibernate.cfg.Configuration;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ import java.util.Properties;
 public class ProductController {
 
     private static Session session;
-    private static Properties props = new Properties();
+    private static final Properties props = new Properties();
 
     static {
         try {
@@ -49,7 +50,7 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> createProduct(@RequestBody ProductDto dto) {
+    public void createProduct(@RequestBody ProductDto dto) {
         JSONObject object = new JSONObject(dto);
         Transaction transaction = session.beginTransaction();
         final ProductPojo pojo = new ProductPojo();
@@ -61,16 +62,10 @@ public class ProductController {
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Allow-Origin", "*");
+        responseHeaders.set("Access-Control-Allow-Headers", "*");
 
-
-//        responseHeaders.set("Access-Control-Allow-Headers", "*");
-//        responseHeaders.set("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
-//        responseHeaders.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-
-        return ResponseEntity.ok()
-                .headers(responseHeaders)
-                .body("Product is created");
-    };
+        ResponseEntity.ok().headers(responseHeaders);
+    }
 
     @GetMapping("/all")
     public ResponseEntity<List<ProductPojo>> getProduct() {
@@ -85,5 +80,13 @@ public class ProductController {
         return ResponseEntity.ok()
                 .headers(responseHeaders)
                 .body(res);
-    };
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteProduct() {
+        Transaction transaction = session.beginTransaction();
+
+        session.createNativeQuery("delete from product where id<1000", ProductPojo.class).list();
+        transaction.commit();
+    }
 }
