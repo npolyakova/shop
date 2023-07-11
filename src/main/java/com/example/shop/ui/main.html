@@ -4,31 +4,50 @@
     <title>Create your own shop</title>
     <link rel="stylesheet" type="text/css" href="main.css">
     <script type="text/javascript">
-        function addProduct() {
+        function addShop() {
             const shopName = document.getElementById('name').value;
+            const shopPublic = document.getElementById('public').checked;
             const body = {
-                name: shopName,
-                count: 1
+                shopName: shopName,
+                shopPublic: shopPublic
             }
-            fetch("http://localhost:4000/product/add", {
+            fetch("http://localhost:4000/shops/add", {
                 method: "POST",
                 body: JSON.stringify(body),
                 headers: {
                     "Content-type": "application/json; charset=UTF-8"
                 }
             })
-                .then((response) => response.json())
-                .then((json) => console.log(json))
+                .then((response) => {
+                    if (response.status != 200) {
+                        document.getElementById("name_validation").style.setProperty('visibility', 'visible');
+                        return;
+                    }
+                    else {
+                        console.log(response.json());
+                        document.getElementById("name_validation").style.setProperty('visibility', 'hidden');
+                        alert("Shop is added");
+                        location.reload();
+                    }
+                })
                 .catch(() => console.log("Something went wrong"));
         }
-        function deleteProduct() {
+        function deleteShop() {
             const shopId = document.getElementById('id').value;
-            fetch("http://localhost:4000/product/delete/" + shopId, {
+            if (!shopId) {
+                document.getElementById("id_validation").style.setProperty('visibility', 'visible');
+                return;
+            } else {
+            fetch("http://localhost:4000/shops/delete/" + shopId, {
                 method: "DELETE",
             })
-                .then((response) => response.json())
-                .then((json) => console.log(json))
+                .then(() => {
+                    alert('Shop is deleted');
+                    location.reload();
+                })
                 .catch(() => console.log("Something went wrong"));
+            }
+
         }
     </script>
 </head>
@@ -46,15 +65,15 @@
     <div>
         <p>Here you can test the next things:</p>
         <ul>
-            <li>Enter a name to create a new shop.</li>
+            <li>Enter a name and specify type to create a new store.</li>
             <li>Created shops will be displayed at the list below.</li>
             <li>You also can delete them with delete form.</li>
         </ul>
     </div>
 </section>
-<section>
+<section style="background-color: #44317C; text-align: center">
     <h2>The idea of our product is very simple</h2>
-    <p>Forget about Avito sales and create your own online shop!</p>
+    <p>Forget about selling on Avito and create your own online store!</p>
     <h3>Stop sell like that!</h3>
     <img src="1.png" width="300px" height="300px" alt="1">
     <img src="2.png" width="300px" height="300px" alt="2">
@@ -79,14 +98,14 @@
             <button onclick="location.reload(); scrollIntoView()">Refresh</button>
             <tbody id="response">
                 <script type="text/javascript">
-                    fetch("http://localhost:4000/product/all")
+                    fetch("http://localhost:4000/shops/all")
                         .then((response) => response.json())
                         .then((json) => {
                             for (let i = 0; i < json.length; i++) {
                                 document.getElementById("response").innerHTML +=
-                                    `<tr><td>${json[i].id}</td>
-                             <td>${json[i].name}</td>
-                             <td>${json[i].count}</td></tr>`;
+                                    `<tr><td>${json[i].shopId}</td>
+                             <td>${json[i].shopName}</td>
+                             <td>${json[i].shopPublic}</td></tr>`;
                             }
                         });
                 </script>
@@ -95,39 +114,39 @@
     </div>
 </section>
 <section style="display:flex; align-items: center; flex-direction: column">
-    <form id="create" onsubmit="addProduct(); alert('Shop is created'); ">
+    <div id="create" onsubmit="addShop()">
         <a id="create_shop"></a>
         <div class="form">
             <h2>Create a shop</h2>
             <label>Name</label>
-            <input id="name" type="text" placeholder="Enter any name">
+            <input id="name" type="text" placeholder="Enter shop name">
             <div style="display: flex; flex-direction: row">
-                <input type="checkbox">
-                <label>I want to create a public shop</label>
+                <input type="checkbox" id="public">
+                <label>Public</label>
             </div>
-            <button type="submit">Create shop</button>
+            <button onclick="addShop()">Create shop</button>
         </div>
-    </form>
+    </div>
     <div class="error" id="name_validation">
-        <p>There're some rules of shop naming:</p>
+        <p>Store naming convention:</p>
         <ul>
-            <li>Name should start with a capital letter</li>
-            <li>Name's length should be more than 7 symbols</li>
+            <li>Name should begin with a capital letter.</li>
+            <li>Name length should be more than 6 characters.</li>
         </ul>
     </div>
 </section>
 <section style="display:flex; align-items: center; flex-direction: column">
-    <form id="delete" onsubmit="deleteProduct(); alert('Shop is deleted'); ">
+    <div id="delete">
         <a id="delete_shop"></a>
         <div class="form">
             <h2>Delete a shop</h2>
-            <label>Name</label>
-            <input type="number" id="id" placeholder="Enter id of your shop">
-            <button type="submit">Delete shop</button>
+            <label>Id</label>
+            <input type="number" id="id" placeholder="Enter shop id">
+            <button onclick="deleteShop();">Delete shop</button>
         </div>
-    </form>
+    </div>
     <div class="error" id="id_validation">
-        <p>Cannot delete this shop. It doesn't exists</p>
+        <p>Must be not empty</p>
     </div>
 </section>
 <footer>
