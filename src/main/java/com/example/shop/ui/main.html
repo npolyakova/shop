@@ -1,12 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Create your own shop</title>
     <link rel="stylesheet" type="text/css" href="main.css">
+    <script type="text/javascript">
+        function addProduct() {
+            const shopName = document.getElementById('name').value;
+            const body = {
+                name: shopName,
+                count: 1
+            }
+            fetch("http://localhost:4000/product/add", {
+                method: "POST",
+                body: JSON.stringify(body),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+                .then((response) => response.json())
+                .then((json) => console.log(json))
+                .catch(() => console.log("Something went wrong"));
+        }
+        function deleteProduct() {
+            const shopId = document.getElementById('id').value;
+            fetch("http://localhost:4000/product/delete/" + shopId, {
+                method: "DELETE",
+            })
+                .then((response) => response.json())
+                .then((json) => console.log(json))
+                .catch(() => console.log("Something went wrong"));
+        }
+    </script>
 </head>
 <body>
 <header>
-    <img src="icon.png" width="100" height="100">
+    <img src="icon.png" width="100" height="100" alt="logo">
     <div id="links">
         <a href="#create_shop">Create shop</a>
         <a href="#all_shops">All shops</a>
@@ -24,17 +52,17 @@
         </ul>
     </div>
 </section>
-<section align="center">
+<section>
     <h2>The idea of our product is very simple</h2>
     <p>Forget about Avito sales and create your own online shop!</p>
     <h3>Stop sell like that!</h3>
-    <img src="1.png" width="300px" height="300px">
-    <img src="2.png" width="300px" height="300px">
-    <img src="3.png" width="300px" height="300px">
-    <img src="4.png" width="300px" height="300px">
-    <img src="5.png" width="300px" height="300px">
+    <img src="1.png" width="300px" height="300px" alt="1">
+    <img src="2.png" width="300px" height="300px" alt="2">
+    <img src="3.png" width="300px" height="300px" alt="3">
+    <img src="4.png" width="300px" height="300px" alt="4">
+    <img src="5.png" width="300px" height="300px" alt="5">
     <h3>Sales can be simpler</h3>
-    <img src="site.jpg">
+    <img src="site.jpg" alt="example">
 </section>
 <section id="shops">
     <div id="shops_div">
@@ -42,48 +70,33 @@
         <h2>Already created shops</h2>
         <table>
             <thead>
-            <th>id</th>
-            <th>name</th>
-            <th>public</th>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>public</th>
+            </tr>
             </thead>
+            <button onclick="location.reload(); scrollIntoView()">Refresh</button>
             <tbody id="response">
+                <script type="text/javascript">
+                    fetch("http://localhost:4000/product/all")
+                        .then((response) => response.json())
+                        .then((json) => {
+                            for (let i = 0; i < json.length; i++) {
+                                document.getElementById("response").innerHTML +=
+                                    `<tr><td>${json[i].id}</td>
+                             <td>${json[i].name}</td>
+                             <td>${json[i].count}</td></tr>`;
+                            }
+                        });
+                </script>
             </tbody>
         </table>
-        <script type="text/javascript">
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    let shops = JSON.parse(xhr.response);
-                    for (let i = 0; i < shops.length; i++) {
-                        document.getElementById("response").innerHTML +=
-                            `<tr><td>${shops[i].id}</td>
-                                    <td>${shops[i].name}</td>
-                                    <td>${shops[i].count}</td></tr>`;
-                    }
-                }
-            }
-            xhr.open('get', 'http://192.168.88.253:4000/product/all', true);
-            xhr.send();
-        </script>
     </div>
 </section>
 <section style="display:flex; align-items: center; flex-direction: column">
-<form id="create">
-    <a id="create_shop"></a>
-    <script type="text/javascript">
-        async function f() {
-            await fetch('http://192.168.88.253:4000/product/add', { method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({name: "12", count: 12})
-            })
-                .then((data) => {
-                    console.log(data);
-                })
-                .catch(() => console.log("Something went wrong"))
-        }
-    </script>
+    <form id="create" onsubmit="addProduct(); alert('Shop is created'); ">
+        <a id="create_shop"></a>
         <div class="form">
             <h2>Create a shop</h2>
             <label>Name</label>
@@ -92,9 +105,9 @@
                 <input type="checkbox">
                 <label>I want to create a public shop</label>
             </div>
-            <button type="submit" onclick="return f();">Create shop</button>
+            <button type="submit">Create shop</button>
         </div>
-</form>
+    </form>
     <div class="error" id="name_validation">
         <p>There're some rules of shop naming:</p>
         <ul>
@@ -104,15 +117,15 @@
     </div>
 </section>
 <section style="display:flex; align-items: center; flex-direction: column">
-<form id="delete">
-    <a id="delete_shop"></a>
-    <div class="form">
-        <h2>Delete a shop</h2>
-        <label>Name</label>
-        <input type="number" placeholder="Enter id of your shop">
-        <button type="submit">Delete shop</button>
-    </div>
-</form>
+    <form id="delete" onsubmit="deleteProduct(); alert('Shop is deleted'); ">
+        <a id="delete_shop"></a>
+        <div class="form">
+            <h2>Delete a shop</h2>
+            <label>Name</label>
+            <input type="number" id="id" placeholder="Enter id of your shop">
+            <button type="submit">Delete shop</button>
+        </div>
+    </form>
     <div class="error" id="id_validation">
         <p>Cannot delete this shop. It doesn't exists</p>
     </div>
