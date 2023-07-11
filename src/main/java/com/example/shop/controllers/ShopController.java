@@ -23,51 +23,40 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Properties;
 
+import static com.example.shop.Configuration.buildFactory;
 import static com.example.shop.Configuration.createNewSession;
+import static com.example.shop.ShopHandler.checkFirstLetter;
+import static com.example.shop.ShopHandler.checkLength;
 
 @CrossOrigin(
-        origins = "http://localhost:63325",
+        origins = "http://localhost:63342",
         methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.OPTIONS, RequestMethod.DELETE},
         allowedHeaders = "Content-type"
 )
 @RestController
 @RequestMapping(path = "/shops")
-public class ShopController {
+public class ShopController extends Configuration {
 
-    private static SessionFactory factory;
-    private static final Properties props = new Properties();
-
-    public void setProps() {
-        props.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
-        props.setProperty("hibernate.connection.url", "jdbc:postgresql://stampy.db.elephantsql.com:5432/nykbjfyu");
-        props.setProperty("hibernate.connection.username", "nykbjfyu");
-        props.setProperty("hibernate.connection.password", "BJ0QQMsy2UK45xWFY1PP9GNxa3yNr2jh");
-        props.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        props.setProperty("hibernate.show_sql", "true");
-        props.setProperty("hibernate.hbm2ddl.auto", "update");
-        props.setProperty("hibernate.connection.autocommit", "true");
-    }
-
-    public void createFactory() {
-        setProps();
-        final Configuration config = new Configuration()
-                .addAnnotatedClass(com.example.shop.models.ShopPojo.class)
-                .addProperties(props);
-
-        factory = config.buildSessionFactory();
-    }
+    private static SessionFactory factory = buildFactory();
 
     @PostMapping("/add")
     public @ResponseBody ResponseEntity<String> addShop(@RequestBody ShopDto dto) {
-        if (factory == null) {
-            createFactory();
-        }
-        Session session = factory.openSession();
+        Session session = createNewSession(factory);
         JSONObject object = new JSONObject(dto);
         Transaction transaction = session.beginTransaction();
         final ShopPojo pojo = new ShopPojo();
         pojo.setShopName(object.get("shopName").toString());
         pojo.setShopPublic(Boolean.parseBoolean(object.get("shopPublic").toString()));
+
+        if (!checkLength(pojo.getShopName(), 7)) {
+            session.close();
+            return ResponseEntity.status(400).body("Name should be more than 6 letters");
+        }
+
+        if (!checkFirstLetter(pojo.getShopName())) {
+            session.close();
+            return ResponseEntity.status(400).body("Name should begin with a capital letter");
+        }
 
         session.persist(pojo);
         transaction.commit();
@@ -80,10 +69,7 @@ public class ShopController {
 
     @GetMapping("/all")
     public @ResponseBody ResponseEntity<List<ShopPojo>> getShops() {
-        if (factory == null) {
-            createFactory();
-        }
-        Session session = factory.openSession();
+        Session session = createNewSession(factory);
         Transaction transaction = session.beginTransaction();
 
         var res = session.createNativeQuery("select * from shops", ShopPojo.class).list();
@@ -99,9 +85,6 @@ public class ShopController {
 
     @GetMapping("/{shopId}")
     public @ResponseBody ResponseEntity<ShopPojo> getShop(@PathVariable long shopId) {
-        if (factory == null) {
-            createFactory();
-        }
         Session session = createNewSession(factory);
         Transaction transaction = session.beginTransaction();
 
@@ -120,16 +103,11 @@ public class ShopController {
 
     @DeleteMapping("/delete/{shopId}")
     public @ResponseBody ResponseEntity<String> deleteShop(@PathVariable Long shopId) {
-
         ShopPojo rm_shop = new ShopPojo();
         rm_shop.setShopId(shopId);
 
-        if (factory == null) {
-            createFactory();
-        }
-        Session session = factory.openSession();
+        Session session = createNewSession(factory);
         Transaction transaction = session.beginTransaction();
-
 
         session.createNativeQuery("delete from shops where shop_id = :id", ShopPojo.class)
                 .setParameter("id", rm_shop.getShopId())
