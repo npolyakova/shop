@@ -21,7 +21,6 @@
                 .then((response) => {
                     if (response.status != 200) {
                         document.getElementById("name_validation").style.setProperty('visibility', 'visible');
-                        e.preventDefault();
                         return;
                     }
                     else {
@@ -38,7 +37,7 @@
             if (!shopId) {
                 document.getElementById("id_validation").style.setProperty('visibility', 'visible');
                 return;
-            }
+            } else {
             fetch("http://localhost:4000/shops/delete/" + shopId, {
                 method: "DELETE",
             })
@@ -47,6 +46,8 @@
                     location.reload();
                 })
                 .catch(() => console.log("Something went wrong"));
+            }
+
         }
     </script>
 </head>
@@ -113,7 +114,7 @@
     </div>
 </section>
 <section style="display:flex; align-items: center; flex-direction: column">
-    <form id="create" onsubmit="addShop()">
+    <div id="create" onsubmit="addShop()">
         <a id="create_shop"></a>
         <div class="form">
             <h2>Create a shop</h2>
@@ -123,9 +124,9 @@
                 <input type="checkbox" id="public">
                 <label>Public</label>
             </div>
-            <button type="submit">Create shop</button>
+            <button onclick="addShop()">Create shop</button>
         </div>
-    </form>
+    </div>
     <div class="error" id="name_validation">
         <p>Store naming convention:</p>
         <ul>
@@ -135,15 +136,15 @@
     </div>
 </section>
 <section style="display:flex; align-items: center; flex-direction: column">
-    <form id="delete">
+    <div id="delete">
         <a id="delete_shop"></a>
         <div class="form">
             <h2>Delete a shop</h2>
             <label>Id</label>
             <input type="number" id="id" placeholder="Enter shop id">
-            <button type="submit" onclick="deleteShop();">Delete shop</button>
+            <button onclick="deleteShop();">Delete shop</button>
         </div>
-    </form>
+    </div>
     <div class="error" id="id_validation">
         <p>Must be not empty</p>
     </div>
