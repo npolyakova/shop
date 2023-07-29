@@ -1,9 +1,11 @@
 package com.example.shop.Unit;
 
+import com.example.shop.Configuration;
 import com.example.shop.ShopHandler;
 import com.example.shop.controllers.ShopController;
 import com.example.shop.models.ShopDto;
 import com.example.shop.models.ShopPojo;
+import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,11 +17,14 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-class ShopApplicationTests_unit {
+class ShopControllerUnitTest {
 
 
 	@Mock
@@ -30,7 +35,7 @@ class ShopApplicationTests_unit {
 
 
 
-
+	// Test №1
 	@Test
 	@DisplayName("Add the shop name, that has more than 6 letters and stars with the capital letter")
 	void ShouldAddShopWithCorrectName() {
@@ -43,7 +48,7 @@ class ShopApplicationTests_unit {
 
 	}
 
-
+	// Test №2
 	@Test
 	@DisplayName("Negative Test. The shop name does not start with a capital letter")
 	void ShouldAddShopNameWithoutCapitalLetter() {
@@ -56,6 +61,7 @@ class ShopApplicationTests_unit {
 
 	}
 
+	// Test №3
 	@Test
 	@DisplayName("Negative Test. The shop name is less than 7 letters")
 	void ShouldAddShortShopName() {
@@ -68,6 +74,7 @@ class ShopApplicationTests_unit {
 	}
 
 
+	// Test №4
 	@Test
 	@DisplayName("The shop name starts with any different symbols, but exactly starts with Capital letter")
 	void ShouldAddShopNameWithDifferentSymbols() {
@@ -78,6 +85,7 @@ class ShopApplicationTests_unit {
 	}
 
 
+	// Test №5
 	@Test
 	@DisplayName("The shop name contains only 256 symbols")
 	void ShouldAddShopNameLengthOf256Symbols() {
@@ -87,6 +95,7 @@ class ShopApplicationTests_unit {
 		assertThat(response).isNotNull();
 	}
 
+	// Test №6
 	@Test
 	@DisplayName("Return all shops")
 	void ShouldgetAllShops() {
@@ -107,6 +116,7 @@ class ShopApplicationTests_unit {
 	private void assertEquals(HttpStatus ok, HttpStatusCode statusCode) {
 	}
 
+	// Test №7
 	@Test
 	@DisplayName("Get exist shop")
 	void ShouldGetExistShop() {
