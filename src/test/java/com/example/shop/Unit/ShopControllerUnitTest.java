@@ -1,11 +1,9 @@
 package com.example.shop.Unit;
 
-import com.example.shop.Configuration;
 import com.example.shop.ShopHandler;
 import com.example.shop.controllers.ShopController;
 import com.example.shop.models.ShopDto;
 import com.example.shop.models.ShopPojo;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,11 +15,8 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class ShopControllerUnitTest {
@@ -123,7 +118,6 @@ class ShopControllerUnitTest {
 		final ResponseEntity<ShopPojo> result = shopController.getShop(15);
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 	}
-
 }
 
 

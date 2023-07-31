@@ -36,6 +36,7 @@ public class BaseUiTest {
 
     public SelenideElement Body_Table = $("#response");
 
+    public SelenideElement Button_Telegram = $("html > body > footer > div > a:first-of-type");
 
-
+    public SelenideElement Button_VK = $("html > body > footer > div > a:nth-of-type(2)");
 }

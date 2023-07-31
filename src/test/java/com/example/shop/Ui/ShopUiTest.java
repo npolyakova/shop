@@ -21,7 +21,9 @@ public class ShopUiTest {
 
     @BeforeEach
     public void setSelenide() throws InterruptedException {
+        System.setProperty("chromeoptions.args", "--remote-allow-origins=*");
         open("http://localhost:4000/");
+        Thread.sleep(5000);
     }
 
     //Test №1
@@ -133,6 +135,34 @@ public class ShopUiTest {
             baseUiTest.Greetings.shouldHave(Condition.text("Welcome to our shop constructor!"));
             baseUiTest.MainIcons.shouldBe(Condition.visible);
 
+        });
+    }
+
+    //Test №8
+    @Test
+    @DisplayName("Проверка кнопки Telegram")
+    @Feature("Меню")
+    @Story("Главная страница")
+    public void ShouldCheckTelegramButton() {
+        step("Нажать на кнопку Telegram", () -> {
+            baseUiTest.Button_Telegram.click();
+        });
+        step("Проверить переход на страницу Telegram", () -> {
+            WebDriverRunner.url().equals("https://web.telegram.org/a/");
+        });
+    }
+
+    //Test №9
+    @Test
+    @DisplayName("Проверка кнопки VK. Тест падает.")
+    @Feature("Меню")
+    @Story("Главная страница")
+    public void ShouldCheckVKButton() {
+        step("Нажать на кнопку VK", () -> {
+            baseUiTest.Button_VK.click();
+        });
+        step("Проверить переход на страницу VK", () -> {
+            WebDriverRunner.url().equals("https://m.vk.com/");
         });
     }
 }

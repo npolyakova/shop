@@ -1,29 +1,21 @@
 package com.example.shop.Api;
 
 import com.example.shop.models.ShopDto;
-import com.example.shop.models.ShopPojo;
 import io.qameta.allure.Feature;
-import io.qameta.allure.Stories;
 import io.restassured.RestAssured;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import lombok.NoArgsConstructor;
-import okhttp3.*;
 import org.assertj.core.api.Assertions;
-import org.hamcrest.Matcher;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.web.reactive.server.JsonPathAssertions;
 
-import java.io.IOException;
 import java.util.List;
 
-import static io.restassured.RestAssured.*;
-import static org.assertj.core.api.FactoryBasedNavigableListAssert.assertThat;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 public class ShopApiTest extends BaseApiTest{

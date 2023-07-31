@@ -8,8 +8,6 @@ import io.restassured.specification.ResponseSpecification;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
-import java.util.stream.DoubleStream;
-
 public class BaseApiTest {
 
 
