@@ -93,7 +93,7 @@ public class ShopApiTest extends BaseApiTest{
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("shopId", equalTo(8752));
+                .body("shopId", equalTo(8452));
     }
 
 

@@ -140,7 +140,7 @@ public class ShopUiTest {
 
     //Test №8
     @Test
-    @DisplayName("Проверка кнопки Telegram")
+    @DisplayName("Проверка кнопки Telegram. Flaky Test")
     @Feature("Меню")
     @Story("Главная страница")
     public void ShouldCheckTelegramButton() {

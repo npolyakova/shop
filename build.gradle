@@ -5,10 +5,10 @@ plugins {
 	id 'io.qameta.allure' version '2.11.0'
 }
 
-allure {
-	version = '2.11.0'
-	autoconfigure = true
-}
+//allure {
+//	version = '2.11.0'
+//	autoconfigure = true
+//}
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
