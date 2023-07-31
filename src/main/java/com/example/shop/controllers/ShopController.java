@@ -76,7 +76,7 @@ public class ShopController extends Configuration {
     }
 
     @GetMapping("/{shopId}")
-    public @ResponseBody ResponseEntity<ShopPojo> getShop(@PathVariable long shopId) {
+    public @ResponseBody ResponseEntity<ShopPojo> getShop(@PathVariable int shopId) {
         Session session = createNewSession(factory);
         Transaction transaction = session.beginTransaction();
 
@@ -113,5 +113,8 @@ public class ShopController extends Configuration {
                 .status(204)
                 .headers(responseHeaders)
                 .build();
+    }
+
+    public void closeSession() {
     }
 }

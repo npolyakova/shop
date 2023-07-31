@@ -37,4 +37,5 @@ public class ShopDto {
         this.shopName = shopName;
         this.shopPublic = shopPublic;
     }
+
 }

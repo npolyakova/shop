@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import org.springframework.http.ResponseEntity;
 
 @Entity
 @Table(name = "shops", uniqueConstraints = {@UniqueConstraint(columnNames = "shop_id")})
@@ -45,5 +46,9 @@ public class ShopPojo {
     @Column(name = "shop_public",  nullable = false)
     public boolean getShopPublic() {
         return shopPublic;
+    }
+
+    public ResponseEntity<ShopPojo> getShopId(long invalidShopId) {
+        return null;
     }
 }
