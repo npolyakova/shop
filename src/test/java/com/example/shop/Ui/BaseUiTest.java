@@ -8,7 +8,7 @@ public class BaseUiTest {
 
     public SelenideElement Greetings = $("#greetings > h1");
 
-    public SelenideElement MainIcons = $("html > body > header > img");
+    public SelenideElement MainPicture = $("html > body > header > img");
 
     public SelenideElement Button_Href_CREATE_SHOP = $("#links > a:first-of-type");
 

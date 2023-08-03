@@ -11,7 +11,7 @@ public class ShopHandlerUnitTest {
 
     // Test №1
     @Test
-    @DisplayName("The length of the shop name is equal or bigger then the count")
+    @DisplayName("Проверка количества букв названия магазина, который равен или больше количества магазинов ")
     void ShouldCheckLengthShopNameComparedToCount() {
         String name = "OnlineShop";
         int count = 8;
@@ -23,7 +23,7 @@ public class ShopHandlerUnitTest {
 
     // Test №2
     @Test
-    @DisplayName("Negative.The length of the shop name is less then the count")
+    @DisplayName("Отрицательный тест. Проверка количества букв названия магазина, который меньше количества магазинов")
     void ShouldCheckLengthShopNameLessThenCount() {
         String name = "OnlineShop";
         int count = 11;

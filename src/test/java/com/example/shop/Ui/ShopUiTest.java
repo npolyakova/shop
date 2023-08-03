@@ -28,16 +28,16 @@ public class ShopUiTest {
 
     //Test №1
     @Test
-    @DisplayName("Проверка отображения главной страницы: url, приветствие, иконка в заголовке")
+    @DisplayName("Проверка отображения главной страницы: url, приветствие, наличие логотипа в заголовке")
     @Feature("Меню")
     @Story("Главная страница")
     public void ShouldCheckMainPageLocation() {
         step("Проверить главную страницу сайта Онлайн-магазинов, по адрессу", () -> {
             WebDriverRunner.url().equals("http://localhost:4000/");
         });
-        step("Приветствие на главной странице и наличие иконки в заголовке", () -> {
+        step("Приветствие на главной странице и наличие логотипа в заголовке", () -> {
             baseUiTest.Greetings.shouldHave(Condition.text("Welcome to our shop constructor!"));
-            baseUiTest.MainIcons.shouldBe(Condition.visible);
+            baseUiTest.MainPicture.shouldBe(Condition.visible);
         });
 
     }
@@ -129,11 +129,11 @@ public class ShopUiTest {
     @Story("Главная страница")
     public void ShouldCheckRefreshButton() {
         step("Проверить рабоспособность кнопки refresh, проверить что на главной странице отображаетя адрес," +
-                "приветствие, логотип", () -> {
+                "приветствие, наличие логотипа", () -> {
             baseUiTest.Button_Refresh.click();
             WebDriverRunner.url().equals("http://localhost:4000/");
             baseUiTest.Greetings.shouldHave(Condition.text("Welcome to our shop constructor!"));
-            baseUiTest.MainIcons.shouldBe(Condition.visible);
+            baseUiTest.MainPicture.shouldBe(Condition.visible);
 
         });
     }

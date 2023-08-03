@@ -22,6 +22,7 @@ public class ShopApiTest extends BaseApiTest{
 
 
 
+    //Test №1
     @Test
     @Feature("Онлайн Магазин")
     @DisplayName("Cоздание магазина")
@@ -49,6 +50,7 @@ public class ShopApiTest extends BaseApiTest{
 
     }
 
+    //Test №2
     @Test
     @Feature("Онлайн Магазин")
     @DisplayName("Получение всех магазинов")
@@ -66,6 +68,7 @@ public class ShopApiTest extends BaseApiTest{
                 );
     }
 
+    //Test №3
      @Test
     @Feature("Онлайн Магазин")
     @DisplayName("Получение магазина по Id")
@@ -87,7 +90,7 @@ public class ShopApiTest extends BaseApiTest{
 
         System.out.println(getRequest.log().body());
 
-        Response response = getRequest.get("http://localhost:4000/shops/8752" );
+        Response response = getRequest.get("http://localhost:4000/shops/8452" );// "http://localhost:4000/shops/8752"
 
         response
                 .then()
@@ -97,6 +100,7 @@ public class ShopApiTest extends BaseApiTest{
     }
 
 
+    //Test №4
     @Test
     @Feature("Онлайн Магазин")
     @DisplayName("Удаление магазина")

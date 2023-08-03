@@ -32,7 +32,7 @@ class ShopControllerUnitTest {
 
 	// Test №1
 	@Test
-	@DisplayName("Add the shop name, that has more than 6 letters and stars with the capital letter")
+	@DisplayName("Добавление магазина, с названием содержащим более 6 символов и начинающихся с Заглвной буквы")
 	void ShouldAddShopWithCorrectName() {
 		ShopDto dto = new ShopDto(1L, "OnlineShop№1", true);
 
@@ -45,7 +45,7 @@ class ShopControllerUnitTest {
 
 	// Test №2
 	@Test
-	@DisplayName("Negative Test. The shop name does not start with a capital letter")
+	@DisplayName("Отрицательный тест. Добавление магазина, с названием начинающимся не с Заглавной буквы")
 	void ShouldAddShopNameWithoutCapitalLetter() {
 		ShopDto dto = new ShopDto(1L, "onlineShop№2", true);
 
@@ -58,7 +58,7 @@ class ShopControllerUnitTest {
 
 	// Test №3
 	@Test
-	@DisplayName("Negative Test. The shop name is less than 7 letters")
+	@DisplayName("Отрицательный тест. Добавление магазина с названием содержащим 6 символов")
 	void ShouldAddShortShopName() {
 		ShopDto dto = new ShopDto(1L, "Shop№3", true);
 
@@ -71,7 +71,7 @@ class ShopControllerUnitTest {
 
 	// Test №4
 	@Test
-	@DisplayName("The shop name starts with any different symbols, but exactly starts with Capital letter")
+	@DisplayName("Добавление магазина, в названием которого входят любые символы, но начинатся с Заглавной буквы")
 	void ShouldAddShopNameWithDifferentSymbols() {
 		ShopDto dto = new ShopDto(1L, "OnlineShop?!#@$%&№~*^`'/|(_)[]{}-+=.,:;<>", true);
 
@@ -82,7 +82,7 @@ class ShopControllerUnitTest {
 
 	// Test №5
 	@Test
-	@DisplayName("The shop name contains only 256 symbols")
+	@DisplayName("Добавление магазина, с названием содержащим 256 символов")
 	void ShouldAddShopNameLengthOf256Symbols() {
 		ShopDto dto = new ShopDto(1L,"?!#@$%&№~*^`'/|(_)[]{}-+=.,:;<>LongOnlineShopNameLongOnlineShopNameLongOnlineShopNameLongOnlineShopNameLongOnlineShopNameLongOnlineShopNameLongOnlineShopNameLongOnlineShopNameLongOnlineShopNameLongOnlineShopNameLongOnlineShopNameLongOnlineShopNameLongOnlin", true);
 
@@ -92,7 +92,7 @@ class ShopControllerUnitTest {
 
 	// Test №6
 	@Test
-	@DisplayName("Return all shops")
+	@DisplayName("Получения всех магазинов")
 	void ShouldgetAllShops() {
 		List<ShopPojo> expectedShops = Collections.singletonList(
 				new ShopPojo()
@@ -113,7 +113,7 @@ class ShopControllerUnitTest {
 
 	// Test №7
 	@Test
-	@DisplayName("Get exist shop")
+	@DisplayName("Получение существующего магазина")
 	void ShouldGetExistShop() {
 		final ResponseEntity<ShopPojo> result = shopController.getShop(15);
 		assertEquals(HttpStatus.OK, result.getStatusCode());

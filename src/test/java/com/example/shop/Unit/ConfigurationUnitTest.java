@@ -15,7 +15,7 @@ public class ConfigurationUnitTest {
 
     // Test №1
     @Test
-    @DisplayName("Get properties with correct configuration")
+    @DisplayName("Получени свойств в верной конфигурацией")
     void ShouldGetPropsWithCorrectConfiguration() {
         Properties expectedProps = new Properties();
         expectedProps.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
@@ -37,7 +37,7 @@ public class ConfigurationUnitTest {
 
     // Test №2
     @Test
-    @DisplayName("Exception in building of the SessionFactor gets not null")
+    @DisplayName("Получение исключения при построении экземпляра объекта SessionFactory не равному нуль")
     void ShouldGetSessionFactoryWithoutException() {
         Configuration configuration = new Configuration();
 
@@ -48,16 +48,16 @@ public class ConfigurationUnitTest {
 
     // Test №3
     @Test
-    @DisplayName("Get exception when factory is null")
+    @DisplayName("Получение исключения при получении экземпляра объекта равному нуль")
     void ShouldCheckGetExceptionWhenFactoryNull() {
         assertThrows(NullPointerException.class, () -> {
             Configuration.createNewSession(null);
         });
     }
 
-    // Test №4
+    // Test №4 Get a new session when factory correct
     @Test
-    @DisplayName("Get a new session when factory correct")
+    @DisplayName("Получение нового объекта session, при маппинге для базы данных")
     void ShouldCreateNewSessionWithFactory() {
         SessionFactory mockFactory = mock(SessionFactory.class);
         Session mockSession = mock(Session.class);
