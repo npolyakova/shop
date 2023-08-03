@@ -28,5 +28,5 @@ jobs:
         with:
           arguments: build
       - uses: actions/setup-node@v3
-    with:
-      node-version: '16'
+        with:
+          node-version: '16'
