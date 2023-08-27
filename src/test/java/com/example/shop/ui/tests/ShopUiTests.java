@@ -15,6 +15,7 @@ class ShopUiTests {
   @BeforeAll
   static void setUp() {
     Configuration.browser = "Firefox";
+    Configuration.headless = true;
   }
 
   @AfterEach
