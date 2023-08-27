@@ -2,6 +2,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.5'
 	id 'io.spring.dependency-management' version '1.1.0'
+	id 'io.qameta.allure' version '2.8.1'
+	id "io.freefair.lombok" version "6.0.0-m2"
 }
 
 group = 'com.example'
@@ -11,6 +13,27 @@ sourceCompatibility = '17'
 repositories {
 	mavenCentral()
 }
+def allureVersion = '2.20.0',
+	junitVersion = '5.9.2',
+	javaFakerVersion = "1.0.2",
+	jsonSchemaValidatorVersion = '5.3.0',
+	restAssuredVersion = '5.3.0',
+	jacksonDatabindVersion = '2.14.0',
+	assertjCoreVersion = '3.24.1',
+	slf4jVersion = '2.0.5',
+	aspectjWeaverVersion = '1.9.19',
+	awaitilityVersion = "4.2.0"
+
+
+allure {
+	version = allureVersion
+	autoconfigure = true
+	aspectjweaver = true
+	configuration = "testImplementation"
+	useJUnit5 {
+		version = allureVersion
+	}
+}
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -19,8 +42,30 @@ dependencies {
 	implementation 'org.hibernate.orm:hibernate-core:6.2.0.Final'
 	implementation 'org.postgresql:postgresql:42.6.0'
 	implementation 'org.json:json:20230227'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:3.1.1'
+	implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
+
+	testImplementation(
+			"io.rest-assured:json-schema-validator:$jsonSchemaValidatorVersion",
+			"io.qameta.allure:allure-selenide:$allureVersion",
+			"org.aspectj:aspectjweaver:$aspectjWeaverVersion",
+			"io.rest-assured:rest-assured:$restAssuredVersion",
+			"io.qameta.allure:allure-rest-assured:$allureVersion",
+			"com.fasterxml.jackson.core:jackson-databind:$jacksonDatabindVersion",
+			"org.assertj:assertj-core:$assertjCoreVersion",
+			"com.github.javafaker:javafaker:$javaFakerVersion",
+			"org.junit.jupiter:junit-jupiter-api:$junitVersion",
+			"com.codeborne:selenide:6.14.0",
+			"org.awaitility:awaitility:$awaitilityVersion")
+
+	testRuntimeOnly(
+			"org.slf4j:slf4j-simple:$slf4jVersion")
+
 }
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+}
+
 
 tasks.named('test') {
 	useJUnitPlatform()
